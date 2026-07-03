@@ -7,26 +7,23 @@ import {
   Zap,
   Droplets,
   Sparkles,
-  BarChart3,
   Image as ImageIcon,
   ArrowRight,
-  Check,
-  Trophy,
-  Award,
-  Instagram,
-  Twitter,
   Github,
-  Mail,
   Menu,
   X,
+  ShoppingBag,
+  MapPin,
+  FileText,
+  Info,
+  Mail,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { toast, Toaster } from "sonner";
+import { Toaster } from "sonner";
 import { Logo } from "@/components/greenguide/Logo";
 import { Lotus, Leaf as LeafIllu } from "@/components/greenguide/decor";
 import { AiChat } from "@/components/greenguide/AiChat";
 import { ImageAnalysis } from "@/components/greenguide/ImageAnalysis";
-import { Dashboard } from "@/components/greenguide/Dashboard";
 
 export const Route = createFileRoute("/")({ component: Home });
 
@@ -35,45 +32,38 @@ const NAV = [
   ["Features", "features"],
   ["How it Works", "how"],
   ["Assistant", "assistant"],
-  ["Dashboard", "dashboard"],
+  ["Insights", "insights"],
   ["About", "about"],
+  ["Contact", "contact"],
 ];
 
 const FEATURES = [
-  { i: MessageSquare, t: "AI Sustainability Chat", d: "Ask anything — get science-backed, personalized guidance." },
-  { i: Recycle, t: "Waste Segregation", d: "Know exactly where each item belongs, in seconds." },
-  { i: Wind, t: "Carbon Footprint Insights", d: "Track and shrink your CO₂ across every category." },
-  { i: Zap, t: "Energy Saver", d: "Cut your bill with tailored efficiency wins." },
-  { i: Droplets, t: "Water Advisor", d: "Small habits, meaningful liters saved every week." },
-  { i: Sparkles, t: "Eco Lifestyle Ideas", d: "Discover greener alternatives to daily choices." },
-  { i: BarChart3, t: "Sustainability Dashboard", d: "Beautiful analytics for your green journey." },
-  { i: ImageIcon, t: "AI Image Analysis", d: "Snap a photo — get instant eco insights." },
+  { i: MessageSquare, t: "AI Sustainability Chat", d: "Ask any eco question — get contextual, science-informed guidance." },
+  { i: ImageIcon, t: "AI Image Analysis", d: "Upload a photo of an item and get category, impact, and disposal guidance." },
+  { i: Recycle, t: "Waste Classification", d: "Understand which stream an item belongs to and how to dispose of it responsibly." },
+  { i: Wind, t: "Carbon Impact Estimation", d: "Get a plain-language estimate of the environmental footprint of choices you describe." },
+  { i: Zap, t: "Energy Saving Suggestions", d: "Receive practical, low-effort ideas to reduce electricity consumption at home." },
+  { i: Droplets, t: "Water Conservation Advice", d: "Learn small daily habits that meaningfully cut household water use." },
+  { i: Sparkles, t: "Eco-friendly Alternatives", d: "Discover greener substitutes for common everyday products." },
+  { i: ShoppingBag, t: "Sustainable Shopping Tips", d: "Get guidance on materials, labels, and lower-impact purchasing choices." },
 ];
 
 const STEPS = [
-  { t: "Ask or Upload", d: "Type a question or drop an image of anything — waste, plants, bills." },
-  { t: "AI Analyzes", d: "GreenGuide AI reads context, category, and impact behind the scenes." },
-  { t: "Get Insights", d: "Personalized recommendations — carbon, water, and money saved." },
-  { t: "Track Growth", d: "See your Eco Dashboard climb as habits compound." },
+  { t: "Ask or Upload", d: "Type a sustainability question or upload an image of an item." },
+  { t: "AI Interprets", d: "GreenGuide AI reads your input and identifies relevant environmental context." },
+  { t: "Generate Insight", d: "Guidance is generated dynamically from AI reasoning and public sustainability knowledge." },
+  { t: "Act on It", d: "Use the recommendation as one input into your own greener decision." },
 ];
 
-const TIPS = [
-  { cat: "Energy", tip: "Unplug chargers overnight — cuts phantom load by 8–10%." },
-  { cat: "Water", tip: "A brick in the toilet tank saves ~4 L per flush." },
-  { cat: "Recycling", tip: "Rinse containers before recycling — otherwise they're landfill." },
-  { cat: "Food", tip: "Plan meals weekly — households cut food waste by ~30%." },
-  { cat: "Transport", tip: "Combine errands into one trip — cold-engine emissions drop." },
-  { cat: "Shopping", tip: "Ask: do I need this? Second-hand first cuts 60% footprint." },
-  { cat: "Home", tip: "Line-dry clothes on sunny days — free & fabric-friendly." },
-];
-
-const BADGES = [
-  { name: "Green Beginner", threshold: 20, gradient: "from-sage to-leaf/70", icon: "🌱" },
-  { name: "Water Saver", threshold: 40, gradient: "from-sky-300 to-sky-500", icon: "💧" },
-  { name: "Recycling Champion", threshold: 55, gradient: "from-emerald-300 to-emerald-500", icon: "♻️" },
-  { name: "Energy Expert", threshold: 70, gradient: "from-amber-300 to-amber-500", icon: "⚡" },
-  { name: "Eco Warrior", threshold: 82, gradient: "from-lotus to-blush", icon: "🌸" },
-  { name: "Earth Protector", threshold: 95, gradient: "from-leaf to-emerald-600", icon: "🌍" },
+const CAPABILITIES = [
+  { i: Recycle, t: "Waste Classification", d: "Identify the likely waste stream (wet, dry, e-waste, hazardous) for an item you describe or upload." },
+  { i: Wind, t: "Carbon Impact Estimation", d: "Explain the relative carbon footprint of a habit, product, or choice in accessible terms." },
+  { i: Zap, t: "Energy Saving Suggestions", d: "Suggest practical steps to lower home electricity use based on your described situation." },
+  { i: Droplets, t: "Water Conservation Advice", d: "Recommend water-saving habits tailored to the activity you mention." },
+  { i: Sparkles, t: "Eco-friendly Alternatives", d: "Propose lower-impact substitutes for common single-use or resource-heavy items." },
+  { i: ShoppingBag, t: "Sustainable Shopping Tips", d: "Highlight what to look for on labels, materials, and packaging when buying." },
+  { i: MapPin, t: "Local Recycling Guidance", d: "Share general guidance on how items are typically routed through recycling systems." },
+  { i: FileText, t: "Sustainability Report Summary", d: "Summarize a sustainability topic or document into a short, plain-language brief." },
 ];
 
 function Nav() {
@@ -148,6 +138,11 @@ function Nav() {
 }
 
 function Hero() {
+  const capabilities = [
+    { i: MessageSquare, t: "Ask Sustainability Questions", d: "Chat with an AI assistant about any eco topic." },
+    { i: ImageIcon, t: "Upload Images", d: "Get contextual guidance on items you photograph." },
+    { i: Sparkles, t: "Receive AI Recommendations", d: "Personalized suggestions generated on demand." },
+  ];
   return (
     <section id="hero" className="gradient-hero relative overflow-hidden pt-28 pb-20 sm:pt-32">
       <Lotus className="absolute -top-6 -left-10 opacity-60 animate-float" size={160} />
@@ -158,7 +153,7 @@ function Hero() {
       <div className="relative mx-auto max-w-6xl px-5 sm:px-8">
         <div className="mx-auto max-w-3xl text-center">
           <div className="animate-fade-up mx-auto inline-flex items-center gap-2 rounded-full border border-leaf/20 bg-white/60 px-4 py-1.5 text-xs font-medium text-leaf backdrop-blur">
-            <Sparkles className="h-3.5 w-3.5" /> AI-powered sustainability, made personal
+            <Sparkles className="h-3.5 w-3.5" /> AI-powered sustainability guidance
           </div>
           <h1 className="animate-fade-up mt-6 font-display text-5xl font-semibold leading-[1.05] tracking-tight text-foreground sm:text-6xl md:text-7xl" style={{ animationDelay: "80ms" }}>
             Smarter choices for a{" "}
@@ -166,8 +161,8 @@ function Hero() {
             <span className="text-gradient-lotus">tomorrow</span>.
           </h1>
           <p className="animate-fade-up mx-auto mt-6 max-w-xl text-lg text-muted-foreground" style={{ animationDelay: "160ms" }}>
-            GreenGuide AI analyzes your daily habits, images, and questions to deliver
-            personalized sustainability recommendations — from your kitchen to your commute.
+            GreenGuide AI turns your everyday questions and images into clear, on-demand
+            sustainability guidance — generated dynamically by AI, no account required.
           </p>
           <div className="animate-fade-up mt-8 flex flex-wrap items-center justify-center gap-3" style={{ animationDelay: "240ms" }}>
             <Button
@@ -176,7 +171,7 @@ function Hero() {
               className="rounded-full bg-gradient-to-r from-leaf to-sage px-7 py-6 text-base text-white shadow-[0_16px_40px_-16px] shadow-leaf/60 hover:opacity-95"
             >
               <a href="#assistant">
-                Start Your Green Journey <ArrowRight className="ml-1.5 h-4 w-4" />
+                Try the Assistant <ArrowRight className="ml-1.5 h-4 w-4" />
               </a>
             </Button>
             <Button
@@ -189,15 +184,14 @@ function Hero() {
             </Button>
           </div>
 
-          <div className="animate-fade-up mt-14 grid grid-cols-3 gap-3 text-left sm:gap-6" style={{ animationDelay: "320ms" }}>
-            {[
-              ["1.2M+", "kg CO₂ avoided"],
-              ["48K", "eco actions logged"],
-              ["96%", "users feel better"],
-            ].map(([n, l]) => (
-              <div key={l} className="glass rounded-2xl p-4 text-center">
-                <div className="font-display text-2xl font-bold text-foreground sm:text-3xl">{n}</div>
-                <div className="mt-1 text-[11px] uppercase tracking-wider text-muted-foreground sm:text-xs">{l}</div>
+          <div className="animate-fade-up mt-14 grid grid-cols-1 gap-3 text-left sm:grid-cols-3 sm:gap-4" style={{ animationDelay: "320ms" }}>
+            {capabilities.map(({ i: Icon, t, d }) => (
+              <div key={t} className="glass rounded-2xl p-4">
+                <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-leaf/15 to-lotus/15 text-leaf">
+                  <Icon className="h-5 w-5" />
+                </div>
+                <div className="mt-3 font-display text-base font-semibold text-foreground">{t}</div>
+                <div className="mt-1 text-xs text-muted-foreground">{d}</div>
               </div>
             ))}
           </div>
@@ -251,11 +245,10 @@ function Features() {
       subtitle="A cohesive AI toolkit that turns intent into everyday impact."
     >
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {FEATURES.map(({ i: Icon, t, d }, idx) => (
+        {FEATURES.map(({ i: Icon, t, d }) => (
           <div
             key={t}
             className="group relative overflow-hidden rounded-3xl border border-border/60 bg-white/70 p-6 backdrop-blur transition hover:-translate-y-1 hover:border-leaf/40 hover:shadow-[var(--shadow-glow)]"
-            style={{ animationDelay: `${idx * 40}ms` }}
           >
             <div className="mb-4 grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br from-leaf/15 to-lotus/15 text-leaf transition group-hover:from-leaf group-hover:to-sage group-hover:text-white">
               <Icon className="h-5 w-5" />
@@ -275,8 +268,8 @@ function HowItWorks() {
     <Section
       id="how"
       eyebrow="How it works"
-      title={<>Four steps to a greener you.</>}
-      subtitle="Simple by design — powerful in impact."
+      title={<>From input to insight in four steps.</>}
+      subtitle="Recommendations are generated on demand using AI reasoning over public sustainability knowledge."
     >
       <div className="grid gap-4 md:grid-cols-4">
         {STEPS.map((s, i) => (
@@ -306,170 +299,45 @@ function AssistantSection() {
       id="assistant"
       eyebrow="AI Assistant · Image Analysis"
       title={<>Talk to your sustainability co-pilot.</>}
-      subtitle="Ask a question or drop an image — get instant, personalized guidance."
+      subtitle="Ask a question or upload an image — GreenGuide AI generates guidance dynamically from your input."
     >
       <div className="grid gap-6 lg:grid-cols-2">
         <AiChat />
         <ImageAnalysis />
       </div>
+      <div className="mt-6 flex items-start gap-3 rounded-2xl border border-border/60 bg-white/60 p-4 text-xs text-muted-foreground sm:text-sm">
+        <Info className="mt-0.5 h-4 w-4 shrink-0 text-leaf" />
+        <p>
+          GreenGuide AI provides AI-generated sustainability guidance for educational and
+          awareness purposes. Recommendations may vary depending on local regulations and
+          should be used as guidance rather than official environmental policy.
+        </p>
+      </div>
     </Section>
   );
 }
 
-function DashboardSection() {
+function InsightsSection() {
   return (
     <Section
-      id="dashboard"
-      eyebrow="Eco Dashboard"
-      title={<>Your green journey, <span className="text-gradient-lotus">visualized</span>.</>}
-      subtitle="Beautiful analytics keep you motivated — see progress at a glance."
+      id="insights"
+      eyebrow="AI Decision Insights"
+      title={<>What GreenGuide AI can <span className="text-gradient-lotus">generate</span> for you.</>}
+      subtitle="These are the kinds of insights the assistant produces on demand from your text or image input. Nothing is stored — every response is generated fresh."
     >
-      <Dashboard />
-    </Section>
-  );
-}
-
-function DailyChallenge() {
-  const [done, setDone] = useState(false);
-  return (
-    <div className="glass-strong relative overflow-hidden rounded-3xl p-6 sm:p-8">
-      <Lotus className="absolute -right-6 -top-6 opacity-50" size={140} />
-      <div className="relative flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between">
-        <div className="max-w-lg">
-          <div className="inline-flex items-center gap-2 rounded-full bg-lotus/15 px-3 py-1 text-xs font-semibold text-lotus">
-            <Sparkles className="h-3.5 w-3.5" /> Daily Green Challenge
-          </div>
-          <h3 className="mt-3 font-display text-2xl font-semibold sm:text-3xl">
-            Avoid single-use plastic today.
-          </h3>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Carry a reusable bottle, refuse plastic bags, and skip disposable cutlery. Small
-            choice, big compound effect over the year.
-          </p>
-        </div>
-        <div className="flex items-center gap-4">
-          <div className="text-right">
-            <div className="text-xs uppercase tracking-wider text-muted-foreground">Streak</div>
-            <div className="font-display text-2xl font-bold text-leaf">7 days</div>
-          </div>
-          <Button
-            onClick={() => {
-              setDone((d) => !d);
-              if (!done) toast.success("Challenge completed!", { description: "+10 eco points earned." });
-            }}
-            className={`rounded-full px-6 py-6 text-white transition ${
-              done
-                ? "bg-leaf hover:bg-leaf/90"
-                : "bg-gradient-to-r from-lotus to-blush text-earth hover:opacity-90"
-            }`}
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {CAPABILITIES.map(({ i: Icon, t, d }) => (
+          <div
+            key={t}
+            className="glass group rounded-3xl p-6 transition hover:-translate-y-1 hover:shadow-[var(--shadow-glow)]"
           >
-            {done ? (
-              <>
-                <Check className="mr-1.5 h-4 w-4" /> Completed
-              </>
-            ) : (
-              "Mark as done"
-            )}
-          </Button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function TipsAndChallenge() {
-  const [i, setI] = useState(0);
-  useEffect(() => {
-    const t = setInterval(() => setI((v) => (v + 1) % TIPS.length), 4500);
-    return () => clearInterval(t);
-  }, []);
-  return (
-    <Section
-      id="tips"
-      eyebrow="Daily Habits"
-      title={<>A tiny action, every day.</>}
-      subtitle="Consistency beats intensity — GreenGuide keeps it easy."
-    >
-      <div className="grid gap-6 lg:grid-cols-3">
-        <div className="lg:col-span-2">
-          <DailyChallenge />
-        </div>
-        <div className="glass-strong flex flex-col rounded-3xl p-6">
-          <div className="mb-3 flex items-center justify-between">
-            <div className="font-display text-lg font-semibold">Eco Tip</div>
-            <div className="flex gap-1">
-              {TIPS.map((_, idx) => (
-                <span
-                  key={idx}
-                  className={`h-1.5 w-1.5 rounded-full transition ${
-                    idx === i ? "bg-leaf w-4" : "bg-leaf/25"
-                  }`}
-                />
-              ))}
+            <div className="mb-4 grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br from-leaf to-sage text-white">
+              <Icon className="h-5 w-5" />
             </div>
+            <div className="font-display text-base font-semibold">{t}</div>
+            <div className="mt-1.5 text-sm text-muted-foreground">{d}</div>
           </div>
-          <div className="flex-1">
-            <div className="inline-block rounded-full bg-leaf/10 px-2.5 py-0.5 text-[11px] font-semibold text-leaf">
-              {TIPS[i].cat}
-            </div>
-            <p className="animate-fade-up mt-3 text-lg leading-snug text-foreground" key={i}>
-              {TIPS[i].tip}
-            </p>
-          </div>
-          <div className="mt-4 flex flex-wrap gap-1.5">
-            {Array.from(new Set(TIPS.map((t) => t.cat))).map((c) => (
-              <span
-                key={c}
-                className="rounded-full border border-border/60 bg-white/60 px-2 py-0.5 text-[11px] text-muted-foreground"
-              >
-                {c}
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
-    </Section>
-  );
-}
-
-function Achievements({ score = 78 }: { score?: number }) {
-  return (
-    <Section
-      id="achievements"
-      eyebrow="Achievements"
-      title={<>Earn badges as you grow.</>}
-      subtitle="Gamified milestones that make sustainable habits stick."
-    >
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-6">
-        {BADGES.map((b) => {
-          const unlocked = score >= b.threshold;
-          return (
-            <div
-              key={b.name}
-              className={`glass group relative overflow-hidden rounded-2xl p-5 text-center transition ${
-                unlocked ? "hover:-translate-y-1" : "opacity-55"
-              }`}
-            >
-              <div
-                className={`mx-auto grid h-16 w-16 place-items-center rounded-full bg-gradient-to-br text-2xl shadow-md ${b.gradient} ${
-                  !unlocked && "grayscale"
-                }`}
-              >
-                {b.icon}
-              </div>
-              <div className="mt-3 text-sm font-semibold">{b.name}</div>
-              <div className="mt-1 text-[11px] text-muted-foreground">
-                {unlocked ? (
-                  <span className="inline-flex items-center gap-1 text-leaf">
-                    <Trophy className="h-3 w-3" /> Unlocked
-                  </span>
-                ) : (
-                  `Reach ${b.threshold} points`
-                )}
-              </div>
-            </div>
-          );
-        })}
+        ))}
       </div>
     </Section>
   );
@@ -488,14 +356,47 @@ function About() {
           <p className="text-lg leading-relaxed text-foreground/85 sm:text-xl">
             GreenGuide AI exists because the biggest barrier to sustainable living isn't
             willingness — it's <em className="text-leaf">clarity</em>. We use AI to translate
-            complex environmental science into small, specific, personalized choices that
-            compound into real impact. One question, one image, one habit at a time.
+            complex environmental information into small, specific, everyday choices —
+            generated on demand from your questions and images, without needing an account.
           </p>
-          <div className="mt-6 inline-flex items-center gap-2 rounded-full bg-white/70 px-4 py-2 text-sm text-earth ring-1 ring-border/60">
-            <Award className="h-4 w-4 text-leaf" />
-            "The greatest threat to our planet is the belief that someone else will save it."
-            — <span className="font-medium">Robert Swan</span>
-          </div>
+        </div>
+      </div>
+    </Section>
+  );
+}
+
+function Contact() {
+  return (
+    <Section
+      id="contact"
+      eyebrow="Contact"
+      title={<>Get in touch with the team.</>}
+      subtitle="Built by Yooniq Forge for the Gen AI Academy APAC Hackathon."
+    >
+      <div className="mx-auto grid max-w-3xl gap-4 sm:grid-cols-2">
+        <div className="glass rounded-3xl p-6">
+          <div className="text-xs font-semibold uppercase tracking-wider text-leaf">Team</div>
+          <div className="mt-1 font-display text-2xl font-semibold">Yooniq Forge</div>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Team Leader
+          </p>
+          <div className="mt-1 font-medium text-foreground">Debopriya Bose</div>
+          <a
+            href="mailto:dbose0906@gmail.com"
+            className="mt-1 inline-flex items-center gap-1.5 text-sm text-leaf hover:underline"
+          >
+            <Mail className="h-3.5 w-3.5" /> dbose0906@gmail.com
+          </a>
+        </div>
+        <div className="glass rounded-3xl p-6">
+          <div className="text-xs font-semibold uppercase tracking-wider text-leaf">Team Member</div>
+          <div className="mt-1 font-display text-2xl font-semibold">Kumar Saket</div>
+          <a
+            href="mailto:exios343@gmail.com"
+            className="mt-4 inline-flex items-center gap-1.5 text-sm text-leaf hover:underline"
+          >
+            <Mail className="h-3.5 w-3.5" /> exios343@gmail.com
+          </a>
         </div>
       </div>
     </Section>
@@ -505,53 +406,24 @@ function About() {
 function Footer() {
   return (
     <footer className="relative mt-10 border-t border-border/60 bg-gradient-to-b from-transparent to-cream/60 px-5 py-12 sm:px-8">
-      <div className="mx-auto grid max-w-7xl gap-8 md:grid-cols-4">
-        <div className="md:col-span-2">
-          <Logo />
-          <p className="mt-4 max-w-sm text-sm text-muted-foreground">
-            GreenGuide AI is a personal sustainability companion. Ready for hackathon
-            demo — designed to plug into Gemini API and Google Cloud.
-          </p>
-          <div className="mt-5 flex gap-2">
-            {[Instagram, Twitter, Github, Mail].map((I, idx) => (
-              <a
-                key={idx}
-                href="#"
-                className="grid h-9 w-9 place-items-center rounded-full bg-white/70 text-earth ring-1 ring-border/60 transition hover:bg-leaf hover:text-white"
-              >
-                <I className="h-4 w-4" />
-              </a>
-            ))}
-          </div>
+      <div className="mx-auto flex max-w-7xl flex-col items-center gap-6 text-center">
+        <Logo />
+        <p className="max-w-md text-sm text-muted-foreground">
+          AI-generated sustainability guidance — built for the Gen AI Academy APAC Hackathon.
+        </p>
+        <a
+          href="https://github.com"
+          target="_blank"
+          rel="noreferrer"
+          aria-label="GitHub repository"
+          className="grid h-10 w-10 place-items-center rounded-full bg-white/70 text-earth ring-1 ring-border/60 transition hover:bg-leaf hover:text-white"
+        >
+          <Github className="h-4 w-4" />
+        </a>
+        <div className="mt-2 border-t border-border/60 pt-6 text-xs text-muted-foreground">
+          <div>© 2026 Yooniq Forge</div>
+          <div className="mt-1">Built for Gen AI Academy APAC Hackathon</div>
         </div>
-        <div>
-          <div className="mb-3 text-sm font-semibold">Product</div>
-          <ul className="space-y-2 text-sm text-muted-foreground">
-            {["Features", "Assistant", "Dashboard", "Achievements"].map((l) => (
-              <li key={l}>
-                <a href={`#${l.toLowerCase()}`} className="hover:text-leaf">
-                  {l}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div>
-          <div className="mb-3 text-sm font-semibold">Company</div>
-          <ul className="space-y-2 text-sm text-muted-foreground">
-            {["About", "Privacy Policy", "Terms", "Contact"].map((l) => (
-              <li key={l}>
-                <a href="#about" className="hover:text-leaf">
-                  {l}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-      <div className="mx-auto mt-10 flex max-w-7xl flex-col items-center justify-between gap-3 border-t border-border/60 pt-6 text-xs text-muted-foreground sm:flex-row">
-        <div>© {new Date().getFullYear()} GreenGuide AI. Crafted with 🌱 for a greener tomorrow.</div>
-        <div>Made for demo · v1.0</div>
       </div>
     </footer>
   );
@@ -572,10 +444,9 @@ function Home() {
         <Features />
         <HowItWorks />
         <AssistantSection />
-        <DashboardSection />
-        <TipsAndChallenge />
-        <Achievements />
+        <InsightsSection />
         <About />
+        <Contact />
       </main>
       <Footer />
     </div>

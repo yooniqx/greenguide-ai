@@ -6,7 +6,7 @@
 
 <!-- Banner placeholder -->
 <p align="center">
-  <img src="docs/banner.png" alt="GreenGuide AI banner" width="100%" />
+  <img src="banner.png" alt="GreenGuide AI banner" width="100%" />
 </p>
 
 ---

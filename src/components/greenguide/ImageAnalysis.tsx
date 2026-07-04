@@ -1,43 +1,48 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { Upload, ImagePlus, RefreshCw, CheckCircle2, MessageSquare } from "lucide-react";
 import { toast } from "sonner";
+import { useEcoImage } from "@/lib/eco-image-context";
 
-type FileMeta = {
-  name: string;
-  type: string;
-  sizeKb: number;
-};
+function readAsDataUrl(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(String(r.result));
+    r.onerror = () => reject(r.error);
+    r.readAsDataURL(file);
+  });
+}
 
 export function ImageAnalysis() {
-  const [preview, setPreview] = useState<string | null>(null);
-  const [meta, setMeta] = useState<FileMeta | null>(null);
+  const { image, setImage } = useEcoImage();
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const pick = (f: File) => {
-    if (f.size > 10 * 1024 * 1024) {
-      toast.error("Image is larger than 10MB");
+  const pick = async (f: File) => {
+    if (f.size > 8 * 1024 * 1024) {
+      toast.error("Image is larger than 8MB");
       return;
     }
     if (!f.type.startsWith("image/")) {
       toast.error("Please upload an image file");
       return;
     }
-    const url = URL.createObjectURL(f);
-    setPreview(url);
-    setMeta({
-      name: f.name,
-      type: f.type || "unknown",
-      sizeKb: Math.max(1, Math.round(f.size / 1024)),
-    });
-    toast.success("Image uploaded successfully", {
-      description: "Add your question in the assistant to receive sustainability guidance.",
-    });
+    try {
+      const dataUrl = await readAsDataUrl(f);
+      setImage({
+        dataUrl,
+        name: f.name,
+        type: f.type || "image",
+        sizeKb: Math.max(1, Math.round(f.size / 1024)),
+      });
+      toast.success("Image attached", {
+        description: "Ask the assistant a question about it.",
+      });
+    } catch {
+      toast.error("Couldn't read the image");
+    }
   };
 
   const reset = () => {
-    if (preview) URL.revokeObjectURL(preview);
-    setPreview(null);
-    setMeta(null);
+    setImage(null);
     if (inputRef.current) inputRef.current.value = "";
   };
 
@@ -48,9 +53,9 @@ export function ImageAnalysis() {
           <ImagePlus className="h-4 w-4" />
         </div>
         <div>
-          <div className="font-semibold text-foreground">Eco Image Input Preview</div>
+          <div className="font-semibold text-foreground">Eco Image Input</div>
           <div className="text-xs text-muted-foreground">
-            Upload an item · then ask the assistant about it
+            Upload an item · the assistant will analyze it
           </div>
         </div>
       </div>
@@ -67,8 +72,8 @@ export function ImageAnalysis() {
             }}
             className="group flex aspect-square cursor-pointer flex-col items-center justify-center overflow-hidden rounded-2xl border-2 border-dashed border-leaf/40 bg-leaf/5 transition hover:border-leaf/70 hover:bg-leaf/10"
           >
-            {preview ? (
-              <img src={preview} alt="uploaded preview" className="h-full w-full object-cover" />
+            {image ? (
+              <img src={image.dataUrl} alt="uploaded preview" className="h-full w-full object-cover" />
             ) : (
               <div className="p-6 text-center">
                 <div className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-white/70 text-leaf shadow-sm">
@@ -76,7 +81,7 @@ export function ImageAnalysis() {
                 </div>
                 <div className="mt-4 font-medium text-foreground">Upload an image</div>
                 <div className="mt-1 text-xs text-muted-foreground">
-                  JPG, PNG, WEBP · up to 10MB
+                  JPG, PNG, WEBP · up to 8MB
                 </div>
                 <div className="mt-3 text-[11px] text-muted-foreground">or drag & drop</div>
               </div>
@@ -89,9 +94,9 @@ export function ImageAnalysis() {
             className="hidden"
             onChange={(e) => e.target.files?.[0] && pick(e.target.files[0])}
           />
-          {preview && (
+          {image && (
             <div className="mt-3 flex items-center justify-between gap-2 text-xs text-muted-foreground">
-              <span className="truncate">{meta?.name}</span>
+              <span className="truncate">{image.name}</span>
               <button
                 onClick={reset}
                 className="inline-flex items-center gap-1 text-leaf hover:underline"
@@ -103,21 +108,21 @@ export function ImageAnalysis() {
         </div>
 
         <div className="min-h-[320px]">
-          {meta ? (
+          {image ? (
             <div className="animate-fade-up space-y-3 text-sm">
               <div className="rounded-2xl bg-gradient-to-br from-leaf/10 to-sage/10 p-4">
                 <div className="flex items-center gap-2 text-xs uppercase tracking-wider text-leaf">
-                  <CheckCircle2 className="h-3.5 w-3.5" /> Uploaded
+                  <CheckCircle2 className="h-3.5 w-3.5" /> Attached to assistant
                 </div>
                 <div className="mt-1 font-display text-xl font-semibold break-all">
-                  {meta.name}
+                  {image.name}
                 </div>
                 <div className="mt-2 flex flex-wrap gap-2 text-[11px]">
                   <span className="rounded-full bg-white/70 px-2.5 py-0.5 font-medium text-earth">
-                    {meta.type}
+                    {image.type}
                   </span>
                   <span className="rounded-full bg-white/70 px-2.5 py-0.5 font-medium text-earth">
-                    {meta.sizeKb} KB
+                    {image.sizeKb} KB
                   </span>
                 </div>
               </div>
@@ -130,8 +135,8 @@ export function ImageAnalysis() {
                       Next step
                     </div>
                     <div className="mt-1 text-foreground">
-                      Image uploaded successfully. Add your question in the assistant to
-                      receive sustainability guidance based on this image.
+                      Ask the assistant a question and it will analyze this image alongside
+                      your prompt.
                     </div>
                     <ul className="mt-3 space-y-1.5 text-xs text-muted-foreground">
                       <li>• What eco-friendly actions can I take from this image?</li>

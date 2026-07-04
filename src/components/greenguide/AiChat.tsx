@@ -5,12 +5,12 @@ import { Button } from "@/components/ui/button";
 type Msg = { role: "user" | "assistant"; content: string };
 
 const SUGGESTIONS = [
+  "What eco-friendly actions can I take from this image?",
+  "How can I save water here?",
+  "How should I dispose of this item?",
   "How can I reduce my electricity bill?",
-  "How should I dispose of this waste?",
-  "How can I save water at home?",
   "Eco-friendly alternatives for plastic?",
   "How can I reduce my carbon footprint?",
-  "Sustainable travel tips",
   "Greener daily habits",
 ];
 

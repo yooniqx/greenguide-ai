@@ -297,7 +297,7 @@ function AssistantSection() {
   return (
     <Section
       id="assistant"
-      eyebrow="AI Assistant · Image Analysis"
+      eyebrow="AI Assistant · Eco Image Input"
       title={<>Talk to your sustainability co-pilot.</>}
       subtitle="Ask a question or upload an image — GreenGuide AI generates guidance dynamically from your input."
     >

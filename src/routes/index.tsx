@@ -421,8 +421,7 @@ function Footer() {
           <Github className="h-4 w-4" />
         </a>
         <div className="mt-2 border-t border-border/60 pt-6 text-xs text-muted-foreground">
-          <div>© 2026 Yooniq Forge</div>
-          <div className="mt-1">Built for Gen AI Academy APAC Hackathon</div>
+          © 2026 Yooniq Forge. Built for Gen AI Academy APAC Hackathon.
         </div>
       </div>
     </footer>

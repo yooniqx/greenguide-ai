@@ -39,7 +39,7 @@ const NAV = [
 
 const FEATURES = [
   { i: MessageSquare, t: "AI Sustainability Chat", d: "Ask any eco question — get contextual, science-informed guidance." },
-  { i: ImageIcon, t: "AI Image Analysis", d: "Upload a photo of an item and get category, impact, and disposal guidance." },
+  { i: ImageIcon, t: "Eco Image Input", d: "Upload a photo of an item and pair it with a question for tailored sustainability guidance." },
   { i: Recycle, t: "Waste Classification", d: "Understand which stream an item belongs to and how to dispose of it responsibly." },
   { i: Wind, t: "Carbon Impact Estimation", d: "Get a plain-language estimate of the environmental footprint of choices you describe." },
   { i: Zap, t: "Energy Saving Suggestions", d: "Receive practical, low-effort ideas to reduce electricity consumption at home." },

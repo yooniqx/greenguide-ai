@@ -44,7 +44,7 @@ The interface is designed to feel warm, calm, and nature-inspired (lotus and lil
 ## ✨ Features
 
 - 💬 **AI Sustainability Chat** — Ask any eco-related question.
-- 🖼️ **Image Upload UI** — Drag-and-drop image upload with preview and file details. Real AI image analysis (waste category, environmental impact, disposal method, eco recommendations) is planned as future scope pending Gemini Vision API integration — the current build does not fabricate results for uploaded images.
+- 🖼️ **Eco Image Input** — Drag-and-drop image upload with preview and file details. Users pair the uploaded image with a question in the AI assistant to receive tailored sustainability guidance. The AI recommendation workflow is designed for future Gemini / Google Cloud integration; the current build does not perform real computer vision on uploaded images.
 - ♻️ **Waste Classification** — Understand the correct disposal stream.
 - 🌬️ **Carbon Impact Estimation** — Get a plain-language sense of a choice's footprint.
 - ⚡ **Energy Saving Suggestions** — Practical, low-effort ideas for reducing electricity use.

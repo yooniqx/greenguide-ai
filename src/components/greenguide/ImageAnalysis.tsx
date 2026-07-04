@@ -1,6 +1,5 @@
 import { useRef, useState } from "react";
-import { Upload, Camera, RefreshCw, Info } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Upload, ImagePlus, RefreshCw, CheckCircle2, MessageSquare } from "lucide-react";
 import { toast } from "sonner";
 
 type FileMeta = {
@@ -30,8 +29,8 @@ export function ImageAnalysis() {
       type: f.type || "unknown",
       sizeKb: Math.max(1, Math.round(f.size / 1024)),
     });
-    toast.success("Image ready", {
-      description: "Awaiting Gemini Vision API integration for real analysis.",
+    toast.success("Image uploaded successfully", {
+      description: "Add your question in the assistant to receive sustainability guidance.",
     });
   };
 
@@ -46,12 +45,12 @@ export function ImageAnalysis() {
     <div className="glass-strong overflow-hidden rounded-3xl">
       <div className="flex items-center gap-3 border-b border-border/60 px-6 py-4">
         <div className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-lotus to-blush text-white">
-          <Camera className="h-4 w-4" />
+          <ImagePlus className="h-4 w-4" />
         </div>
         <div>
-          <div className="font-semibold text-foreground">AI Image Analysis</div>
+          <div className="font-semibold text-foreground">Eco Image Input Preview</div>
           <div className="text-xs text-muted-foreground">
-            Upload an item · analysis pending API integration
+            Upload an item · then ask the assistant about it
           </div>
         </div>
       </div>
@@ -101,20 +100,15 @@ export function ImageAnalysis() {
               </button>
             </div>
           )}
-          <Button
-            disabled
-            className="mt-4 w-full rounded-xl bg-gradient-to-r from-leaf to-sage py-6 text-white opacity-80"
-            title="Available after Gemini Vision API integration"
-          >
-            Analyze with AI (coming soon)
-          </Button>
         </div>
 
         <div className="min-h-[320px]">
           {meta ? (
             <div className="animate-fade-up space-y-3 text-sm">
               <div className="rounded-2xl bg-gradient-to-br from-leaf/10 to-sage/10 p-4">
-                <div className="text-xs uppercase tracking-wider text-leaf">Uploaded</div>
+                <div className="flex items-center gap-2 text-xs uppercase tracking-wider text-leaf">
+                  <CheckCircle2 className="h-3.5 w-3.5" /> Uploaded
+                </div>
                 <div className="mt-1 font-display text-xl font-semibold break-all">
                   {meta.name}
                 </div>
@@ -125,27 +119,25 @@ export function ImageAnalysis() {
                   <span className="rounded-full bg-white/70 px-2.5 py-0.5 font-medium text-earth">
                     {meta.sizeKb} KB
                   </span>
-                  <span className="rounded-full bg-leaf/15 px-2.5 py-0.5 font-medium text-leaf">
-                    Ready for AI analysis
-                  </span>
                 </div>
               </div>
 
               <div className="rounded-xl bg-white/60 p-4 ring-1 ring-border/50">
                 <div className="flex items-start gap-2">
-                  <Info className="mt-0.5 h-4 w-4 shrink-0 text-lotus" />
+                  <MessageSquare className="mt-0.5 h-4 w-4 shrink-0 text-leaf" />
                   <div>
                     <div className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-                      Analysis status
+                      Next step
                     </div>
                     <div className="mt-1 text-foreground">
-                      AI image analysis will be available after Gemini Vision API integration.
+                      Image uploaded successfully. Add your question in the assistant to
+                      receive sustainability guidance based on this image.
                     </div>
-                    <p className="mt-2 text-xs text-muted-foreground">
-                      Connect Gemini Vision API to generate waste category, environmental
-                      impact, disposal method, and eco recommendations from the uploaded
-                      image.
-                    </p>
+                    <ul className="mt-3 space-y-1.5 text-xs text-muted-foreground">
+                      <li>• What eco-friendly actions can I take from this image?</li>
+                      <li>• How can I save water here?</li>
+                      <li>• How should I dispose of this item?</li>
+                    </ul>
                   </div>
                 </div>
               </div>
@@ -153,10 +145,10 @@ export function ImageAnalysis() {
           ) : (
             <div className="flex h-full min-h-[280px] flex-col items-center justify-center rounded-2xl border border-dashed border-border/60 bg-white/30 p-6 text-center">
               <div className="text-4xl">🌿</div>
-              <div className="mt-3 font-medium">Analysis Results</div>
+              <div className="mt-3 font-medium">Your image preview</div>
               <p className="mt-1 max-w-[280px] text-xs text-muted-foreground">
-                Upload an image to see its details here. Full AI-generated insights arrive
-                once Gemini Vision API is connected.
+                Upload an image to preview it here, then ask the assistant a question
+                about it for tailored sustainability guidance.
               </p>
             </div>
           )}

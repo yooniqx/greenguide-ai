@@ -32,7 +32,7 @@ function generateReply(q: string): string {
     return "Small daily wins — pick 3 to start:\n\n☘️ Carry a reusable bottle + cloth bag.\n☘️ Meatless Monday.\n☘️ Unplug chargers at night.\n☘️ 5-minute shower rule.\n☘️ Segregate wet & dry waste.\n☘️ Cycle/walk for trips < 2 km.\n☘️ Digital receipts only.\n\nBuild the habit for 21 days — then add the next.";
   if (lower.includes("image") || lower.includes("action") || lower.includes("this"))
     return "Great — here's how to think about the item or scene you're describing:\n\n• **Identify the material** — is it single-use plastic, metal, glass, organic, or e-waste? Material dictates disposal.\n• **Assess reuse potential** — can it be repaired, refilled, or repurposed before disposal?\n• **Route it correctly** — wet waste composts, dry recyclables go to recycling, e-waste and batteries go to authorized collectors.\n• **Find a greener alternative** — for repeat purchases, look for durable, refillable, or plant-based versions.\n\nShare more detail (what it is, how you use it) and I'll tailor the guidance further.";
-
+  return "Here's a personalized take:\n\nBased on your question, focus on the three highest-leverage areas: **energy, transport, and food**. Small consistent changes in these usually cut a household's footprint by 25–35% within a year. Want me to build you a 7-day green plan tailored to your routine?";
 }
 
 export function AiChat() {

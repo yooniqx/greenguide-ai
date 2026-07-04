@@ -24,6 +24,7 @@ import { Logo } from "@/components/greenguide/Logo";
 import { Lotus, Leaf as LeafIllu } from "@/components/greenguide/decor";
 import { AiChat } from "@/components/greenguide/AiChat";
 import { ImageAnalysis } from "@/components/greenguide/ImageAnalysis";
+import { EcoImageProvider } from "@/lib/eco-image-context";
 
 export const Route = createFileRoute("/")({ component: Home });
 
@@ -301,10 +302,12 @@ function AssistantSection() {
       title={<>Talk to your sustainability co-pilot.</>}
       subtitle="Ask a question or upload an image — GreenGuide AI generates guidance dynamically from your input."
     >
-      <div className="grid gap-6 lg:grid-cols-2">
-        <AiChat />
-        <ImageAnalysis />
-      </div>
+      <EcoImageProvider>
+        <div className="grid gap-6 lg:grid-cols-2">
+          <AiChat />
+          <ImageAnalysis />
+        </div>
+      </EcoImageProvider>
       <div className="mt-6 flex items-start gap-3 rounded-2xl border border-border/60 bg-white/60 p-4 text-xs text-muted-foreground sm:text-sm">
         <Info className="mt-0.5 h-4 w-4 shrink-0 text-leaf" />
         <p>

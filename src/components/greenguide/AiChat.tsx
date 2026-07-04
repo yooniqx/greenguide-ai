@@ -1,66 +1,116 @@
-import { useRef, useState } from "react";
-import { Send, Sparkles, Loader2 } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Send, Sparkles, Loader2, ImageIcon, X } from "lucide-react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { Button } from "@/components/ui/button";
+import { useEcoImage } from "@/lib/eco-image-context";
 
-type Msg = { role: "user" | "assistant"; content: string };
+type Msg = {
+  role: "user" | "assistant";
+  content: string;
+  imageThumb?: string;
+};
 
-const SUGGESTIONS = [
-  "What eco-friendly actions can I take from this image?",
-  "How can I save water here?",
-  "How should I dispose of this item?",
+const BASE_SUGGESTIONS = [
   "How can I reduce my electricity bill?",
-  "Eco-friendly alternatives for plastic?",
+  "Eco-friendly alternatives to plastic?",
   "How can I reduce my carbon footprint?",
   "Greener daily habits",
 ];
 
-function generateReply(q: string): string {
-  const lower = q.toLowerCase();
-  if (lower.includes("electric") || lower.includes("bill") || lower.includes("energy"))
-    return "Great question! Here are 5 impactful moves:\n\n1. **Switch to LED bulbs** — up to 75% less energy than incandescent.\n2. **Unplug idle electronics** — phantom load can be ~10% of your bill.\n3. **Set AC to 24°C** — every 1°C cooler adds ~6% consumption.\n4. **Wash clothes in cold water** — heating water is ~90% of the cycle's energy.\n5. **Air-dry when possible** — dryers are one of the top three energy hogs.\n\nEstimated saving: **₹600–₹1,200 / month** for an average household.";
-  if (lower.includes("waste") || lower.includes("dispose") || lower.includes("garbage"))
-    return "Sort waste into 4 streams for maximum recovery:\n\n• **Wet (compostable):** food scraps, peels → home compost or municipal bin.\n• **Dry recyclable:** paper, glass, clean plastic → rinse & bag separately.\n• **Hazardous:** batteries, paint, meds → community drop-off only.\n• **E-waste:** electronics → authorized e-waste collector.\n\nTip: 60% of household waste is compostable. Starting a small bin cuts landfill contribution dramatically.";
-  if (lower.includes("water"))
-    return "Simple habits that stack up quickly:\n\n• Fix leaky taps — 1 drip/sec ≈ **11,000 L/year** wasted.\n• Install low-flow aerators (~₹200) — saves ~40% at the tap.\n• Shorter showers: cutting 2 min saves **~30 L per shower**.\n• Reuse RO reject water for plants or mopping.\n• Run the dishwasher/washer only on full loads.\n\nWeekly target: **210 L saved** — very achievable!";
-  if (lower.includes("plastic") || lower.includes("alternative"))
-    return "Swap out the top offenders first:\n\n• Plastic bottles → **stainless steel** (lasts ~10 years).\n• Cling wrap → **beeswax wraps** (reusable ~1 year).\n• Toothbrush → **bamboo** (biodegradable).\n• Cotton buds → **bamboo swabs**.\n• Grocery bags → **jute / cloth totes**.\n• Straws → **steel or silicone**.\n\nEven swapping 3 of these can prevent **~200 plastic items/year** per person.";
-  if (lower.includes("carbon") || lower.includes("footprint"))
-    return "Your biggest levers, by impact:\n\n1. **Diet:** one plant-based meal/day ≈ **300 kg CO₂/year** saved.\n2. **Transport:** cycling/walking short trips ≈ **150 kg CO₂/year**.\n3. **Energy:** switching to a green tariff can cut home footprint by 40%.\n4. **Shopping:** buy less, buy second-hand — production is ~60% of an item's footprint.\n\nTypical Indian household footprint: 4.2 t CO₂/yr. Target: below 3 t.";
-  if (lower.includes("travel"))
-    return "Sustainable travel starter kit:\n\n• Prefer **trains over flights** for <1000 km (up to 90% less CO₂).\n• **Direct flights** — takeoff/landing is the emissions-heavy phase.\n• Pack a **reusable bottle, cutlery, tote**.\n• Choose **locally owned** stays — money stays in the community.\n• Offset unavoidable emissions via verified Gold Standard projects.";
-  if (lower.includes("habit") || lower.includes("daily"))
-    return "Small daily wins — pick 3 to start:\n\n☘️ Carry a reusable bottle + cloth bag.\n☘️ Meatless Monday.\n☘️ Unplug chargers at night.\n☘️ 5-minute shower rule.\n☘️ Segregate wet & dry waste.\n☘️ Cycle/walk for trips < 2 km.\n☘️ Digital receipts only.\n\nBuild the habit for 21 days — then add the next.";
-  if (lower.includes("image") || lower.includes("action") || lower.includes("this"))
-    return "Great — here's how to think about the item or scene you're describing:\n\n• **Identify the material** — is it single-use plastic, metal, glass, organic, or e-waste? Material dictates disposal.\n• **Assess reuse potential** — can it be repaired, refilled, or repurposed before disposal?\n• **Route it correctly** — wet waste composts, dry recyclables go to recycling, e-waste and batteries go to authorized collectors.\n• **Find a greener alternative** — for repeat purchases, look for durable, refillable, or plant-based versions.\n\nShare more detail (what it is, how you use it) and I'll tailor the guidance further.";
-  return "Here's a personalized take:\n\nBased on your question, focus on the three highest-leverage areas: **energy, transport, and food**. Small consistent changes in these usually cut a household's footprint by 25–35% within a year. Want me to build you a 7-day green plan tailored to your routine?";
+const IMAGE_SUGGESTIONS = [
+  "What eco-friendly actions can I take from this image?",
+  "How can I save water here?",
+  "How should I dispose of this item?",
+  "What greener alternative would you suggest?",
+];
+
+function Markdown({ children }: { children: string }) {
+  return (
+    <div className="prose prose-sm max-w-none prose-headings:font-display prose-headings:font-semibold prose-headings:text-foreground prose-p:my-2 prose-p:leading-relaxed prose-strong:text-foreground prose-ul:my-2 prose-ol:my-2 prose-li:my-0.5 prose-a:text-leaf prose-code:rounded prose-code:bg-black/5 prose-code:px-1 prose-code:py-0.5 prose-code:text-[0.85em] prose-code:before:content-none prose-code:after:content-none prose-pre:rounded-xl prose-pre:bg-black/85 prose-pre:text-white">
+      <ReactMarkdown remarkPlugins={[remarkGfm]}>{children}</ReactMarkdown>
+    </div>
+  );
 }
 
 export function AiChat() {
+  const { image, setImage } = useEcoImage();
   const [messages, setMessages] = useState<Msg[]>([
     {
       role: "assistant",
       content:
-        "🌱 Hi! I'm your GreenGuide AI assistant. Ask me anything about sustainability — from cutting your power bill to disposing of e-waste. Try a prompt below to get started.",
+        "🌱 **Hi! I'm GreenGuide AI.**\n\nAsk me any sustainability question, or upload an image and I'll base my answer on what's in the picture.",
     },
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const endRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    endRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages, loading]);
+
   const send = async (text: string) => {
     const q = text.trim();
     if (!q || loading) return;
-    setMessages((m) => [...m, { role: "user", content: q }]);
+
+    const attachedImage = image?.dataUrl ?? null;
+    const userMsg: Msg = {
+      role: "user",
+      content: q,
+      imageThumb: attachedImage ?? undefined,
+    };
+    const nextMessages = [...messages, userMsg];
+    setMessages(nextMessages);
     setInput("");
     setLoading(true);
-    await new Promise((r) => setTimeout(r, 900 + Math.random() * 700));
-    setMessages((m) => [...m, { role: "assistant", content: generateReply(q) }]);
-    setLoading(false);
-    requestAnimationFrame(() => endRef.current?.scrollIntoView({ behavior: "smooth" }));
+
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: nextMessages.map((m) => ({ role: m.role, content: m.content })),
+          imageDataUrl: attachedImage,
+        }),
+      });
+
+      if (!res.ok) {
+        let errMsg = "Something went wrong. Please try again.";
+        try {
+          const data = (await res.json()) as { message?: string; error?: string };
+          if (data?.message) errMsg = data.message;
+          if (data?.error === "ai_unavailable" && attachedImage) {
+            errMsg =
+              "Image reasoning is currently unavailable because the Gemini Vision API is not configured. I can still help with text questions.";
+          }
+        } catch {
+          /* ignore */
+        }
+        setMessages((m) => [...m, { role: "assistant", content: `⚠️ ${errMsg}` }]);
+        return;
+      }
+
+      const data = (await res.json()) as { reply?: string };
+      const reply = data.reply?.trim() || "I couldn't generate a response. Please try again.";
+      setMessages((m) => [...m, { role: "assistant", content: reply }]);
+    } catch {
+      setMessages((m) => [
+        ...m,
+        {
+          role: "assistant",
+          content: "⚠️ Network error — please check your connection and try again.",
+        },
+      ]);
+    } finally {
+      setLoading(false);
+    }
   };
 
+  const suggestions = image ? IMAGE_SUGGESTIONS : BASE_SUGGESTIONS;
+
   return (
-    <div className="glass-strong overflow-hidden rounded-3xl">
+    <div className="glass-strong flex flex-col overflow-hidden rounded-3xl">
       <div className="flex items-center gap-3 border-b border-border/60 px-6 py-4">
         <div className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-leaf to-sage text-white">
           <Sparkles className="h-4 w-4" />
@@ -68,7 +118,7 @@ export function AiChat() {
         <div>
           <div className="font-semibold text-foreground">AI Sustainability Assistant</div>
           <div className="text-xs text-muted-foreground">
-            Powered by GreenGuide AI · always learning
+            Powered by Gemini · multimodal reasoning
           </div>
         </div>
         <div className="ml-auto flex items-center gap-1.5 rounded-full bg-leaf/10 px-2.5 py-1 text-[11px] font-medium text-leaf">
@@ -77,26 +127,37 @@ export function AiChat() {
         </div>
       </div>
 
-      <div className="flex max-h-[440px] min-h-[340px] flex-col gap-3 overflow-y-auto px-4 py-5 sm:px-6">
+      <div className="flex max-h-[460px] min-h-[360px] flex-col gap-4 overflow-y-auto px-4 py-5 sm:px-6">
         {messages.map((m, i) => (
           <div
             key={i}
             className={`animate-fade-up flex ${m.role === "user" ? "justify-end" : "justify-start"}`}
           >
             <div
-              className={`max-w-[85%] whitespace-pre-wrap rounded-2xl px-4 py-3 text-sm leading-relaxed ${
+              className={`max-w-[88%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
                 m.role === "user"
                   ? "bg-gradient-to-br from-leaf to-[color-mix(in_oklch,var(--leaf)_80%,black_10%)] text-white shadow-[var(--shadow-soft)]"
-                  : "bg-white/70 text-foreground shadow-sm ring-1 ring-border/60"
+                  : "bg-white/80 text-foreground shadow-sm ring-1 ring-border/60"
               }`}
             >
-              {m.content}
+              {m.imageThumb && (
+                <img
+                  src={m.imageThumb}
+                  alt="attached"
+                  className="mb-2 max-h-40 w-full rounded-lg object-cover"
+                />
+              )}
+              {m.role === "assistant" ? (
+                <Markdown>{m.content}</Markdown>
+              ) : (
+                <div className="whitespace-pre-wrap">{m.content}</div>
+              )}
             </div>
           </div>
         ))}
         {loading && (
           <div className="flex justify-start">
-            <div className="flex items-center gap-2 rounded-2xl bg-white/70 px-4 py-3 text-sm text-muted-foreground ring-1 ring-border/60">
+            <div className="flex items-center gap-2 rounded-2xl bg-white/80 px-4 py-3 text-sm text-muted-foreground ring-1 ring-border/60">
               <Loader2 className="h-4 w-4 animate-spin text-leaf" />
               GreenGuide is thinking...
             </div>
@@ -106,12 +167,36 @@ export function AiChat() {
       </div>
 
       <div className="border-t border-border/60 bg-white/40 px-4 py-4 sm:px-6">
+        {image && (
+          <div className="mb-3 flex items-center gap-3 rounded-2xl border border-leaf/25 bg-leaf/5 p-2 pr-3">
+            <img
+              src={image.dataUrl}
+              alt={image.name}
+              className="h-12 w-12 rounded-lg object-cover"
+            />
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-leaf">
+                <ImageIcon className="h-3 w-3" /> Attached to next message
+              </div>
+              <div className="truncate text-xs text-muted-foreground">{image.name}</div>
+            </div>
+            <button
+              type="button"
+              onClick={() => setImage(null)}
+              className="grid h-7 w-7 place-items-center rounded-full text-muted-foreground transition hover:bg-white hover:text-foreground"
+              aria-label="Remove attached image"
+            >
+              <X className="h-3.5 w-3.5" />
+            </button>
+          </div>
+        )}
         <div className="mb-3 flex flex-wrap gap-2">
-          {SUGGESTIONS.map((s) => (
+          {suggestions.map((s) => (
             <button
               key={s}
               onClick={() => send(s)}
-              className="rounded-full border border-border/70 bg-white/60 px-3 py-1.5 text-xs text-foreground/80 transition hover:-translate-y-0.5 hover:border-leaf/40 hover:bg-leaf/5 hover:text-leaf"
+              disabled={loading}
+              className="rounded-full border border-border/70 bg-white/60 px-3 py-1.5 text-xs text-foreground/80 transition hover:-translate-y-0.5 hover:border-leaf/40 hover:bg-leaf/5 hover:text-leaf disabled:opacity-50"
             >
               {s}
             </button>
@@ -127,7 +212,9 @@ export function AiChat() {
           <input
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Ask your sustainability question..."
+            placeholder={
+              image ? "Ask about the uploaded image..." : "Ask your sustainability question..."
+            }
             className="flex-1 bg-transparent px-2 py-1.5 text-sm outline-none placeholder:text-muted-foreground"
           />
           <Button

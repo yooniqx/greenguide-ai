@@ -13,7 +13,7 @@
 
 ## 📖 Project Overview
 
-**GreenGuide AI** is a web application that helps individuals make more environmentally responsible decisions. Users can ask sustainability questions in natural language, or upload an image of an item, and receive AI-generated guidance covering waste classification, carbon impact, energy and water saving suggestions, and eco-friendly alternatives.
+**GreenGuide AI** is an AI sustainability assistant UI built for the Gen AI Academy APAC Hackathon. It helps individuals make more environmentally responsible decisions by turning natural-language questions and uploaded item images into clear, on-demand guidance covering waste classification, carbon impact, energy and water saving suggestions, and eco-friendly alternatives. The image upload preview is fully implemented; the AI recommendation workflow is designed for Gemini / Google Cloud integration.
 
 The experience is intentionally designed to feel like a premium AI product — calm, focused, and free of gimmicks such as accounts, gamification, or dashboards of fabricated metrics. Every recommendation is generated on demand from the user's input; nothing is stored.
 

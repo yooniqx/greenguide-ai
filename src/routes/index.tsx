@@ -39,7 +39,7 @@ const NAV = [
 
 const FEATURES = [
   { i: MessageSquare, t: "AI Sustainability Chat", d: "Ask any eco question — get contextual, science-informed guidance." },
-  { i: ImageIcon, t: "AI Image Analysis", d: "Upload a photo of an item and get category, impact, and disposal guidance." },
+  { i: ImageIcon, t: "Eco Image Input", d: "Upload a photo of an item and pair it with a question for tailored sustainability guidance." },
   { i: Recycle, t: "Waste Classification", d: "Understand which stream an item belongs to and how to dispose of it responsibly." },
   { i: Wind, t: "Carbon Impact Estimation", d: "Get a plain-language estimate of the environmental footprint of choices you describe." },
   { i: Zap, t: "Energy Saving Suggestions", d: "Receive practical, low-effort ideas to reduce electricity consumption at home." },
@@ -297,7 +297,7 @@ function AssistantSection() {
   return (
     <Section
       id="assistant"
-      eyebrow="AI Assistant · Image Analysis"
+      eyebrow="AI Assistant · Eco Image Input"
       title={<>Talk to your sustainability co-pilot.</>}
       subtitle="Ask a question or upload an image — GreenGuide AI generates guidance dynamically from your input."
     >
@@ -421,8 +421,7 @@ function Footer() {
           <Github className="h-4 w-4" />
         </a>
         <div className="mt-2 border-t border-border/60 pt-6 text-xs text-muted-foreground">
-          <div>© 2026 Yooniq Forge</div>
-          <div className="mt-1">Built for Gen AI Academy APAC Hackathon</div>
+          © 2026 Yooniq Forge. Built for Gen AI Academy APAC Hackathon.
         </div>
       </div>
     </footer>

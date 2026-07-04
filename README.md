@@ -13,7 +13,7 @@
 
 ## 📖 Project Overview
 
-**GreenGuide AI** is a web application that helps individuals make more environmentally responsible decisions. Users can ask sustainability questions in natural language, or upload an image of an item, and receive AI-generated guidance covering waste classification, carbon impact, energy and water saving suggestions, and eco-friendly alternatives.
+**GreenGuide AI** is an AI sustainability assistant UI built for the Gen AI Academy APAC Hackathon. It helps individuals make more environmentally responsible decisions by turning natural-language questions and uploaded item images into clear, on-demand guidance covering waste classification, carbon impact, energy and water saving suggestions, and eco-friendly alternatives. The image upload preview is fully implemented; the AI recommendation workflow is designed for Gemini / Google Cloud integration.
 
 The experience is intentionally designed to feel like a premium AI product — calm, focused, and free of gimmicks such as accounts, gamification, or dashboards of fabricated metrics. Every recommendation is generated on demand from the user's input; nothing is stored.
 
@@ -44,7 +44,7 @@ The interface is designed to feel warm, calm, and nature-inspired (lotus and lil
 ## ✨ Features
 
 - 💬 **AI Sustainability Chat** — Ask any eco-related question.
-- 🖼️ **Image Upload UI** — Drag-and-drop image upload with preview and file details. Real AI image analysis (waste category, environmental impact, disposal method, eco recommendations) is planned as future scope pending Gemini Vision API integration — the current build does not fabricate results for uploaded images.
+- 🖼️ **Eco Image Input** — Drag-and-drop image upload with preview and file details. Users pair the uploaded image with a question in the AI assistant to receive tailored sustainability guidance. The AI recommendation workflow is designed for future Gemini / Google Cloud integration; the current build does not perform real computer vision on uploaded images.
 - ♻️ **Waste Classification** — Understand the correct disposal stream.
 - 🌬️ **Carbon Impact Estimation** — Get a plain-language sense of a choice's footprint.
 - ⚡ **Energy Saving Suggestions** — Practical, low-effort ideas for reducing electricity use.

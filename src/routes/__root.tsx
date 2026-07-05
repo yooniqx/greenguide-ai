@@ -91,6 +91,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "GreenGuide AI — Smarter Choices for a Greener Tomorrow" },
+      { name: "description", content: "GreenGuide AI helps you make eco-friendly choices with AI-powered sustainability insights, image analysis, and a personalized eco dashboard." },
+      { property: "og:description", content: "GreenGuide AI helps you make eco-friendly choices with AI-powered sustainability insights, image analysis, and a personalized eco dashboard." },
+      { name: "twitter:description", content: "GreenGuide AI helps you make eco-friendly choices with AI-powered sustainability insights, image analysis, and a personalized eco dashboard." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/ES8WkEac31Ol92endWZTeC1YW1D3/social-images/social-1783232274653-banner.webp" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/ES8WkEac31Ol92endWZTeC1YW1D3/social-images/social-1783232274653-banner.webp" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },

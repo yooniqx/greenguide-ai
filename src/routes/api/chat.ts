@@ -47,6 +47,29 @@ export const Route = createFileRoute("/api/chat")({
         if (!Array.isArray(messages) || messages.length === 0) {
           return new Response("messages required", { status: 400 });
         }
+        if (messages.length > MAX_MESSAGES) {
+          return new Response("Too many messages", { status: 400 });
+        }
+        for (const m of messages) {
+          if (!m || typeof m.role !== "string" || !ALLOWED_ROLES.has(m.role)) {
+            return new Response("Invalid message role", { status: 400 });
+          }
+          if (typeof m.content !== "string") {
+            return new Response("Invalid message content", { status: 400 });
+          }
+          if (m.content.length > MAX_CONTENT_LEN) {
+            return new Response("Message content too long", { status: 400 });
+          }
+        }
+        if (imageDataUrl != null) {
+          if (typeof imageDataUrl !== "string" || !imageDataUrl.startsWith("data:image/")) {
+            return new Response("Invalid image data", { status: 400 });
+          }
+          if (imageDataUrl.length > MAX_IMAGE_DATA_URL_LEN) {
+            return new Response("Image too large", { status: 413 });
+          }
+        }
+
 
         const key = process.env.LOVABLE_API_KEY;
         if (!key) {

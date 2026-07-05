@@ -62,6 +62,9 @@ The interface is designed to feel warm, calm, and nature-inspired (lotus and lil
 | :---: | :---: | :---: |
 | ![](banner.png) | ![](ai-assistant.png) | ![](insights.png) |
 
+| Features | How It Works | About |
+| :---: | :---: | :---: |
+| ![](features.png) | ![](working.png) | ![](about.png) |
 ---
 
 ## 🏗️ Architecture Overview

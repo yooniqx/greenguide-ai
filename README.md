@@ -58,11 +58,9 @@ The interface is designed to feel warm, calm, and nature-inspired (lotus and lil
 
 ## 🖼️ Screenshots
 
-<!-- Add real screenshots after capture -->
-
 | Home | AI Assistant | Insights |
 | :---: | :---: | :---: |
-| _screenshot placeholder_ | _screenshot placeholder_ | _screenshot placeholder_ |
+| ![](banner.png) | ![](ai-assistant.png) | ![](insights.png) |
 
 ---
 

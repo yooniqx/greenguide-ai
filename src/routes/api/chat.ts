@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 type ChatMessage = {
-  role: "user" | "assistant" | "system";
+  role: "user" | "assistant";
   content: string;
 };
 
@@ -9,6 +9,13 @@ type ChatRequestBody = {
   messages?: ChatMessage[];
   imageDataUrl?: string | null;
 };
+
+const ALLOWED_ROLES = new Set(["user", "assistant"]);
+const MAX_MESSAGES = 50;
+const MAX_CONTENT_LEN = 4000;
+// ~8 MB raw; base64 is ~4/3 larger. Cap the data URL string at ~11 MB.
+const MAX_IMAGE_DATA_URL_LEN = 11 * 1024 * 1024;
+
 
 const SYSTEM_PROMPT = `You are GreenGuide AI, an environmental sustainability assistant.
 

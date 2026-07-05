@@ -45,9 +45,21 @@ export function AiChat() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const endRef = useRef<HTMLDivElement>(null);
+  const didMountRef = useRef(false);
 
   useEffect(() => {
-    endRef.current?.scrollIntoView({ behavior: "smooth" });
+    // Skip initial mount so the page doesn't auto-scroll to the Assistant
+    // section on first load. Only scroll the messages list on subsequent updates.
+    if (!didMountRef.current) {
+      didMountRef.current = true;
+      return;
+    }
+    const el = endRef.current;
+    if (!el) return;
+    const parent = el.parentElement;
+    if (parent) {
+      parent.scrollTop = parent.scrollHeight;
+    }
   }, [messages, loading]);
 
   const send = async (text: string) => {
